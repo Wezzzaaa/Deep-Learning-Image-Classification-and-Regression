@@ -1,0 +1,154 @@
+[CELL 9] Computing Efficiency Metrics & Generating Final Report...
+  └─ Calculating FLOPs, energy, and carbon emissions...
+  └─ FLOPs: 22,930,365,369,600 | Energy: 12.7362 Wh | CO2: 5094.49 g
+  └─ Compiling all results and metrics...
+
+================================================================================
+SEQUENTIAL MULTI-TASK DEEP LEARNING PROJECT - COMPREHENSIVE REPORT
+================================================================================
+
+PROJECT OVERVIEW:
+  - Approach: Sequential multi-task learning (Classification → Regression)
+  - Device: T4 GPU (x2) on Kaggle
+  - Framework: PyTorch 2.x with DataParallel
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MODEL ARCHITECTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Base Model:          ResNet18 (ImageNet Pretrained) + Dual-Head Architecture
+Total Parameters:    11,461,515
+Image Branch:        ResNet18(512 features) → Classification Head
+Tabular Branch:      8 features → Regression Head
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TASK 1: CLASSIFICATION (CIFAR-10)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TRAINING SUMMARY:
+  - Epochs Completed:       15
+  - Training Time:          283.87s (4.73 minutes)
+  - Final Train Loss:       0.0483
+  - Final Val Loss:         0.7570
+  - Best Val Loss:          0.6669
+  - Final Train Accuracy:   0.9838 (98%)
+  - Final Val Accuracy:     0.8545 (85%)
+
+TEST EVALUATION METRICS:
+  Accuracy:    0.8485  (Formula: TP+TN / Total)
+  Precision:   0.8477  (Formula: TP / (TP+FP))
+  Recall:      0.8485  (Formula: TP / (TP+FN))
+  F1-Score:    0.8462  (Formula: 2×(Precision×Recall)/(Precision+Recall))
+  ROC-AUC:     0.9851  (Formula: Area under ROC curve)
+  Kappa:       0.8317  (Formula: (Po-Pe)/(1-Pe) [inter-rater agreement])
+  MCC:         0.8321  (Formula: (TP×TN-FP×FN)/√((TP+FP)(TP+FN)(TN+FP)(TN+FN)))
+
+METRIC EXPLANATIONS - CLASSIFICATION:
+  • Accuracy: Percentage of correct predictions (both TP and TN) out of total
+  • Precision: Of the predicted positives, how many were actually positive
+  • Recall (Sensitivity): Of the actual positives, how many did we correctly identify
+  • F1-Score: Harmonic mean balancing precision and recall
+  • ROC-AUC: Measures model's ability to distinguish classes across all thresholds
+  • Kappa (Cohen's): Measures inter-rater agreement accounting for chance
+  • MCC (Matthews): Correlation between predictions and ground truth (-1 to 1)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TASK 2: REGRESSION (California Housing)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TRAINING SUMMARY:
+  - Epochs Completed:       15
+  - Training Time:          43.64s (0.73 minutes)
+  - Initial Train Loss:     0.245464
+  - Final Train Loss:       0.172132
+  - Final Val Loss:         0.081629
+  - Best Val Loss:          0.079620
+  - Loss Improvement:       29.87%
+
+TEST EVALUATION METRICS:
+  MAE:         0.221983  (Formula: Σ|y_true - y_pred| / n)
+  MAPE:        6.0243%  (Formula: Σ(|y_true - y_pred| / y_true) / n × 100)
+  RMSE:        0.281537  (Formula: √(Σ(y_true - y_pred)² / n))
+  R²-Score:    0.8442  (Formula: 1 - (SS_res / SS_tot))
+  MSE:         0.079263  (Formula: Σ(y_true - y_pred)² / n)
+
+METRIC EXPLANATIONS - REGRESSION:
+  • MAE (Mean Absolute Error): Average absolute difference between predictions and actual values
+  • MAPE (Mean Absolute % Error): Average percentage error, shows relative magnitude
+  • RMSE (Root Mean Square Error): Penalizes larger errors more heavily than MAE
+  • R² (Coefficient of Determination): Proportion of variance explained (0 to 1, higher is better)
+  • MSE (Mean Squared Error): Average of squared differences (Joules equivalent of variance)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPUTATIONAL EFFICIENCY & ENVIRONMENTAL IMPACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+COMPUTATIONAL METRICS:
+  - Total FLOPs:            22,930,365,369,600
+    Formula: Σ(params × 2 × batch_size × batches_per_epoch × epochs_per_task)
+    [2 for forward+backward pass, scales by batch size and epoch count]
+  
+  - FLOPs per Epoch:        764,345,512,320
+    Formula: Total FLOPs / Total Epochs
+
+ENERGY CONSUMPTION:
+  - GPU Power (per device): 70 W (T4 GPU specifications)
+  - Number of GPUs:         2
+  - Total Power Draw:       140 W
+    Formula: 70W/GPU × 2 GPUs
+  
+  - Training Duration:      0.090973 hours (327.50 seconds)
+  
+  - Energy Consumed:        12.7362 Wh (0.0127 kWh)
+    Formula: Power(W) × Time(s) / 3600 = 140W × 327.50s / 3600 = 12.7362 Wh
+    
+  - Energy per Epoch:       0.4245 Wh
+    Formula: Total Energy / Total Epochs
+
+ENVIRONMENTAL IMPACT:
+  - CO2 Emissions:          5094.49 grams (5.0945 kg)
+    Formula: Energy(kWh) × 0.4 kg CO2/kWh × 1000 = 0.0127 kWh × 0.4 × 1000 = 5094.49g
+    [Assumes 0.4 kg CO2 per kWh average grid electricity]
+    
+  - CO2 per Epoch:          169.82 grams
+    Formula: Total CO2 / Total Epochs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROJECT SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TOTAL TRAINING TIME:      327.50s (5.46 minutes)
+TOTAL EPOCHS:             30
+DATASET SIZES:
+  - CIFAR-10 Train:        50,000 images
+  - CIFAR-10 Test:         10,000 images
+  - Housing Train:         16512 samples
+  - Housing Test:          4224 samples
+
+OUTPUT FILES GENERATED:
+  ✓ best_model_clf.pth              - Classification checkpoint
+  ✓ best_model_reg.pth              - Regression checkpoint
+  ✓ cifar10_samples.png             - Dataset visualization
+  ✓ learning_curves.png             - Training history (4 plots)
+  ✓ confusion_matrix.png            - Classification confusion matrix
+  ✓ regression_predictions.png      - Regression predicted vs actual
+  ✓ project_summary.txt             - This comprehensive report
+
+STATUS: ✓ PROJECT COMPLETE
+
+================================================================================
+
+  └─ ✓ Report saved to project_summary.txt
+
+✓ SEQUENTIAL TRAINING COMPLETE!
+
+✓ Output files generated:
+  - best_model_clf.pth (classification checkpoint)
+  - best_model_reg.pth (regression checkpoint)
+  - cifar10_samples.png (dataset visualization)
+  - learning_curves.png (all 4 training curves)
+  - confusion_matrix.png (classification analysis)
+  - regression_predictions.png (regression analysis)
+  - project_summary.txt (comprehensive final report)
+
+✓ All requirements satisfied!
